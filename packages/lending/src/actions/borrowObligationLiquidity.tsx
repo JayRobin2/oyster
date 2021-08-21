@@ -25,7 +25,7 @@ export const borrowObligationLiquidity = async (
   }
 
   notify({
-    message: 'Depositing funds...',
+    message: 'Depositing funds into obligation account...',
     description: 'Please review transactions to approve.',
     type: 'warn',
   });
@@ -96,7 +96,7 @@ export const borrowObligationLiquidity = async (
     const { txid } = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers, true);
 
     notify({
-      message: 'Funds deposited.',
+      message: 'Deposting funds into obligation.',
       type: 'success',
       description: (
         <>
