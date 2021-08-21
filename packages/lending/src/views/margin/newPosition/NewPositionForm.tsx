@@ -1,12 +1,11 @@
 import { ArrowDownOutlined } from '@ant-design/icons';
 import { components, contexts, ParsedAccount } from '@oyster/common';
-import { Reserve } from '@solana/spl-token-lending';
 import { Button, Card } from 'antd';
 import React, { useState } from 'react';
 import CollateralInput from '../../../components/CollateralInput';
 import { LABELS } from '../../../constants';
 import { UserDeposit } from '../../../hooks';
-import { ReserveParser } from '../../../models';
+import { Reserve, ReserveParser } from '../../../models';
 import { Position } from './interfaces';
 import { useLeverage } from './leverage';
 import { usePoolAndTradeInfoFrom } from './utils';

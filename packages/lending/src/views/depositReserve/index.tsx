@@ -9,12 +9,12 @@ import {
   SideReserveOverviewMode,
 } from '../../components/SideReserveOverview';
 import { GUTTER } from '../../constants';
-import { useReserve } from '../../hooks';
+import { useLendingReserve } from '../../hooks';
 import './style.less';
 
 export const DepositReserveView = () => {
   const { id } = useParams<{ id: string }>();
-  const lendingReserve = useReserve(id);
+  const lendingReserve = useLendingReserve(id);
   const reserve = lendingReserve?.info;
 
   if (!reserve || !lendingReserve) {

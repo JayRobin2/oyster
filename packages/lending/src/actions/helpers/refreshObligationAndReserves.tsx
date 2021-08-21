@@ -1,12 +1,12 @@
 import { contexts, ParsedAccount } from '@oyster/common';
+import { Connection, PublicKey, TransactionInstruction } from '@solana/web3.js';
 import {
   Obligation,
   refreshObligationInstruction,
   refreshReserveInstruction,
   Reserve,
-} from '@solana/spl-token-lending';
-import { Connection, PublicKey, TransactionInstruction } from '@solana/web3.js';
-import { ReserveParser } from '../models';
+  ReserveParser,
+} from '../../models';
 
 const { cache } = contexts.Accounts;
 

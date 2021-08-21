@@ -4,12 +4,12 @@ import { useParams } from 'react-router-dom';
 import { ReserveStatus } from '../../components/ReserveStatus';
 import { UserLendingCard } from '../../components/UserLendingCard';
 import { GUTTER } from '../../constants';
-import { useReserve } from '../../hooks';
+import { useLendingReserve } from '../../hooks';
 import './style.less';
 
 export const ReserveView = () => {
   const { id } = useParams<{ id: string }>();
-  const lendingReserve = useReserve(id);
+  const lendingReserve = useLendingReserve(id);
   const reserve = lendingReserve?.info;
 
   if (!reserve || !lendingReserve) {

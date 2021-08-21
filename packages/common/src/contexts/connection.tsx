@@ -1,4 +1,3 @@
-import { sleep, useLocalStorageState } from '../utils/utils';
 import {
   ENV as ChainId,
   TokenInfo,
@@ -21,41 +20,22 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { ExplorerLink } from '../components/ExplorerLink';
 import { setProgramIds } from '../utils/ids';
 import { notify } from '../utils/notifications';
-import { SendTransactionError, SignTransactionError } from '../utils/errors';
+import { sleep, useLocalStorageState } from '../utils/utils';
 
 export type ENV =
-  | 'mainnet-beta (Serum)'
-  | 'mainnet-beta'
-  | 'testnet'
+
   | 'devnet'
-  | 'localnet';
+ 
 
 export const ENDPOINTS = [
-  {
-    name: 'mainnet-beta (Serum)' as ENV,
-    endpoint: 'https://solana-api.projectserum.com/',
-    ChainId: ChainId.MainnetBeta,
-  },
-  {
-    name: 'mainnet-beta' as ENV,
-    endpoint: 'https://api.mainnet-beta.solana.com',
-    ChainId: ChainId.MainnetBeta,
-  },
-  {
-    name: 'testnet' as ENV,
-    endpoint: clusterApiUrl('testnet'),
-    ChainId: ChainId.Testnet,
-  },
+
+ 
   {
     name: 'devnet' as ENV,
     endpoint: 'https://api.devnet.solana.com',
     ChainId: ChainId.Devnet,
   },
-  {
-    name: 'localnet' as ENV,
-    endpoint: 'http://127.0.0.1:8899',
-    ChainId: ChainId.Devnet,
-  },
+  
 ];
 
 const DEFAULT = ENDPOINTS[0].endpoint;
@@ -103,6 +83,8 @@ export function ConnectionProvider({ children = undefined as any }) {
     endpoint,
   ]);
 
+  
+
   const env =
     ENDPOINTS.find(end => end.endpoint === endpoint)?.name || ENDPOINTS[0].name;
 
@@ -120,7 +102,8 @@ export function ConnectionProvider({ children = undefined as any }) {
         .getList();
 
       // @FIXME: remove hardcoded values
-      if (endpoint.ChainId === ChainId.Devnet) {
+     
+      
         tokens.push(
           {
             chainId: 103,
@@ -148,8 +131,10 @@ export function ConnectionProvider({ children = undefined as any }) {
               website: 'https://tether.to/',
             },
           },
+
+       
         );
-      }
+      
 
       const tokenMap = tokens.reduce((map, item) => {
         map.set(item.address, item);
@@ -386,13 +371,8 @@ export const sendTransaction = async (
   if (signers.length > 0) {
     transaction.partialSign(...signers);
   }
-
   if (!includesFeePayer) {
-    try {
-      transaction = await wallet.signTransaction(transaction);
-    } catch (ex) {
-      throw new SignTransactionError(ex);
-    }
+    transaction = await wallet.signTransaction(transaction);
   }
 
   const rawTransaction = transaction.serialize();
@@ -405,16 +385,16 @@ export const sendTransaction = async (
   let slot = 0;
 
   if (awaitConfirmation) {
-    const confirmationStatus = await awaitTransactionSignatureConfirmation(
+    const confirmation = await awaitTransactionSignatureConfirmation(
       txid,
       DEFAULT_TIMEOUT,
       connection,
       commitment,
     );
 
-    slot = confirmationStatus?.slot || 0;
+    slot = confirmation?.slot || 0;
 
-    if (confirmationStatus?.err) {
+    if (confirmation?.err) {
       let errors: string[] = [];
       try {
         // TODO: This call always throws errors and delays error feedback
@@ -425,27 +405,20 @@ export const sendTransaction = async (
       }
 
       notify({
-        message: 'Transaction error',
+        message: 'Transaction failed...',
         description: (
           <>
             {errors.map(err => (
               <div>{err}</div>
             ))}
-            <ExplorerLink
-              address={txid}
-              type="transaction"
-              short
-              connection={connection}
-            />
+            <ExplorerLink address={txid} type="transaction" short />
           </>
         ),
         type: 'error',
       });
 
-      throw new SendTransactionError(
-        `Transaction ${txid} failed (${JSON.stringify(confirmationStatus)})`,
-        txid,
-        confirmationStatus.err,
+      throw new Error(
+        `Raw transaction ${txid} failed (${JSON.stringify(status)})`,
       );
     }
   }

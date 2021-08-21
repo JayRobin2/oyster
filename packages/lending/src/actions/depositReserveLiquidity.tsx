@@ -1,6 +1,6 @@
 import {
-  ensureSplAccount,
-  findOrCreateAccountByMint,
+
+ 
   LENDING_PROGRAM_ID,
   models,
   notify,
@@ -18,7 +18,8 @@ import {
   depositReserveLiquidityInstruction,
   refreshReserveInstruction,
   Reserve,
-} from '@solana/spl-token-lending';
+} from '../models';
+import { ensureSplAccount, findOrCreateAccountByMint } from './accounts';
 
 const { approve } = models;
 

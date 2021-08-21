@@ -63,7 +63,7 @@ export const PROGRAM_IDS = [
   {
     name: 'mainnet-beta',
     governance: () => ({
-      programId: new PublicKey('GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw'),
+      programId: new PublicKey('GovergMfhoNZePj4v86rLXZSN4DeFSLmvKEgWCch1Zuu'),
     }),
     wormhole: () => ({
       pubkey: new PublicKey('WormT3McKhFJ2RkiGpdw9GKvNCrB2aB54gb2uV9MfQC'),
@@ -85,7 +85,7 @@ export const PROGRAM_IDS = [
   {
     name: 'testnet',
     governance: () => ({
-      programId: new PublicKey('GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw'),
+      programId: new PublicKey('GovergMfhoNZePj4v86rLXZSN4DeFSLmvKEgWCch1Zuu'),
     }),
     wormhole: () => ({
       pubkey: new PublicKey('5gQf5AUhAgWYgUCt9ouShm9H7dzzXUsLdssYwe5krKhg'),
@@ -99,12 +99,13 @@ export const PROGRAM_IDS = [
       },
       legacy: [],
     }),
-    lending: () => new PublicKey('6TvznH3B2e3p2mbhufNBpgSrLx6UkgvxtVQvopEZ2kuH'),
+    lending: () =>
+      new PublicKey('6TvznH3B2e3p2mbhufNBpgSrLx6UkgvxtVQvopEZ2kuH'),
   },
   {
     name: 'devnet',
     governance: () => ({
-      programId: new PublicKey('GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw'),
+      programId: new PublicKey('GovergMfhoNZePj4v86rLXZSN4DeFSLmvKEgWCch1Zuu'),
     }),
     wormhole: () => ({
       pubkey: new PublicKey('WormT3McKhFJ2RkiGpdw9GKvNCrB2aB54gb2uV9MfQC'),
@@ -118,12 +119,13 @@ export const PROGRAM_IDS = [
       },
       legacy: [new PublicKey('BSfTAcBdqmvX5iE2PW88WFNNp2DHhLUaBKk5WrnxVkcJ')],
     }),
-    lending: () => new PublicKey('6TvznH3B2e3p2mbhufNBpgSrLx6UkgvxtVQvopEZ2kuH'),
+    lending: () =>
+      new PublicKey('6TvznH3B2e3p2mbhufNBpgSrLx6UkgvxtVQvopEZ2kuH'),
   },
   {
     name: 'localnet',
     governance: () => ({
-      programId: new PublicKey('GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw'),
+      programId: new PublicKey('GovergMfhoNZePj4v86rLXZSN4DeFSLmvKEgWCch1Zuu'),
     }),
     wormhole: () => ({
       pubkey: new PublicKey('WormT3McKhFJ2RkiGpdw9GKvNCrB2aB54gb2uV9MfQC'),
@@ -137,7 +139,7 @@ export const PROGRAM_IDS = [
       },
       legacy: [],
     }),
-    lending: () => new PublicKey('6TvznH3B2e3p2mbhufNBpgSrLx6UkgvxtVQvopEZ2kuH'),
+    lending: () => new PublicKey('ReplacePubkey'),
   },
 ];
 

@@ -90,10 +90,30 @@ export function PythProvider({ children = null as any }) {
     [subscriptions, tokenMap, products, connection, prices, setPrices, setSubscriptions],
   );
 
+
+  // @FIXME: Fix Pyth glitch, hardcoded prices temporary 
   const getPrice = useCallback(
-    (mint: string) => {
-      subscribeToPrice(mint);
-      return prices[mint] || 0;
+    (mintAddress: string) => {
+    
+  
+
+
+
+  if(mintAddress == "So11111111111111111111111111111111111111112"){
+ 
+    return 50;
+  }
+
+  if(mintAddress == "9FbAMDvXqNjPqZSYt4EWTguJuDrGkfvwr3gSFpiSbX9S"){
+    return 7.78;
+  }
+
+
+  else{
+    return 0;
+  }
+  
+      
     },
     [subscribeToPrice, prices],
   );

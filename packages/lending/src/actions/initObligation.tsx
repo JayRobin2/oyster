@@ -1,17 +1,17 @@
-import { notify, sendTransaction } from '@oyster/common';
+import { sendTransaction, notify } from '@oyster/common';
 import {
   Account,
   Connection,
   PublicKey,
   TransactionInstruction,
 } from '@solana/web3.js';
-import { initObligationInstruction, OBLIGATION_SIZE } from '@solana/spl-token-lending';
-import { createObligation } from './createObligation';
+import { initObligationInstruction, Obligation } from '../models';
 
 export const initObligation = async (
   connection: Connection,
   wallet: any,
-  lendingMarket: PublicKey,
+  obligation: Obligation,
+  obligationAddress: PublicKey
 ) => {
   notify({
     message: 'Initializing obligation...',
@@ -19,26 +19,18 @@ export const initObligation = async (
     type: 'warn',
   });
 
+  // user from account
   const signers: Account[] = [];
   const instructions: TransactionInstruction[] = [];
   const cleanupInstructions: TransactionInstruction[] = [];
 
-  const obligationRentExempt = await connection.getMinimumBalanceForRentExemption(
-    OBLIGATION_SIZE,
-  );
-
-  const obligationAddress = createObligation(
-    instructions,
-    wallet.publicKey,
-    obligationRentExempt,
-    signers,
-  );
+  signers.push(wallet.info.account);
 
   instructions.push(
     initObligationInstruction(
       obligationAddress,
-      lendingMarket,
-      wallet.publicKey,
+      obligation.lendingMarket,
+      wallet.publicKey
     ),
   );
 

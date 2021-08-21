@@ -6,15 +6,14 @@ import {
   TokenDisplay,
   TokenIcon,
 } from '@oyster/common';
-import { LendingMarket, Reserve } from '@solana/spl-token-lending';
 import { Card, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
-  useReserves,
+  useLendingReserves,
   useUserBalance,
   useUserDeposits,
 } from '../../hooks';
-import { ReserveParser } from '../../models';
+import { LendingMarket, Reserve, ReserveParser } from '../../models';
 import './style.less';
 
 const { cache } = contexts.Accounts;
@@ -41,7 +40,7 @@ export default function CollateralInput(props: {
   const { balance: tokenBalance } = useUserBalance(
     props.reserve.liquidity.mintPubkey,
   );
-  const { reserveAccounts } = useReserves();
+  const { reserveAccounts } = useLendingReserves();
   const { tokenMap } = useConnectionConfig();
   const [depositReserve, setCollateralReserve] = useState<string>();
   const [balance, setBalance] = useState<number>(0);

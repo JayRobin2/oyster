@@ -1,12 +1,12 @@
 import { Card } from 'antd';
 import React from 'react';
 import { LABELS } from '../../constants';
-import { useReserves } from '../../hooks/useReserves';
+import { useLendingReserves } from '../../hooks/useLendingReserves';
 import { MarginTradeItem } from './item';
 import './itemStyle.less';
 
 export const MarginTrading = () => {
-  const { reserveAccounts } = useReserves();
+  const { reserveAccounts } = useLendingReserves();
   return (
     <div className="flexColumn">
       <Card>

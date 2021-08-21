@@ -1,12 +1,12 @@
 import { Card } from 'antd';
 import React from 'react';
 import { LABELS } from '../../constants';
-import { useReserves } from '../../hooks';
+import { useLendingReserves } from '../../hooks';
 import { BorrowItem } from './item';
 import './itemStyle.less';
 
 export const BorrowView = () => {
-  const { reserveAccounts } = useReserves();
+  const { reserveAccounts } = useLendingReserves();
   return (
     <div className="flexColumn">
       <Card>

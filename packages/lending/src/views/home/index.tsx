@@ -10,7 +10,7 @@ import { Card, Col, Row, Statistic } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { GUTTER, LABELS } from '../../constants';
 import { usePyth } from '../../contexts/pyth';
-import { useReserves } from '../../hooks';
+import { useLendingReserves } from '../../hooks';
 import { reserveMarketCap, Totals } from '../../models';
 import { BarChartStatistic } from './../../components/BarChartStatistic';
 import { LendingReserveItem } from './item';
@@ -20,7 +20,7 @@ const { cache } = contexts.Accounts;
 const { useConnectionConfig } = contexts.Connection;
 
 export const HomeView = () => {
-  const { reserveAccounts } = useReserves();
+  const { reserveAccounts } = useLendingReserves();
   const { getPrice } = usePyth();
   const { tokenMap } = useConnectionConfig();
   const [totals, setTotals] = useState<Totals>({
@@ -57,7 +57,7 @@ export const HomeView = () => {
         marketSize: fromLamports(marketCapLamports, liquidityMint.info) * price,
         borrowed:
           fromLamports(
-            wadToLamports(item.info.liquidity.borrowedAmountWads),
+            wadToLamports(item.info.liquidity.borrowedAmountWads).toNumber(),
             liquidityMint.info,
           ) * price,
         name: getTokenName(tokenMap, mint),

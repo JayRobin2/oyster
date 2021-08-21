@@ -6,5 +6,3 @@ export * from './utils';
 export * from './strings';
 export * as shortvec from './shortvec';
 export * from './borsh';
-export * from './errors';
-export * from './explorer';

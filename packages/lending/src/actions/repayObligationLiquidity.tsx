@@ -1,11 +1,12 @@
 import {
-  createTokenAccount,
+  
   models,
   notify,
   ParsedAccount,
   sendTransaction,
   TOKEN_PROGRAM_ID,
   TokenAccount,
+  cache,
 } from '@oyster/common';
 import { AccountLayout, NATIVE_MINT, Token } from '@solana/spl-token';
 import { Account, Connection, TransactionInstruction } from '@solana/web3.js';
@@ -13,8 +14,10 @@ import {
   Obligation,
   repayObligationLiquidityInstruction,
   Reserve,
-} from '@solana/spl-token-lending';
-import { refreshObligationAndReserves } from './refreshObligationAndReserves';
+  ObligationParser,
+} from '../models';
+import { refreshObligationAndReserves } from './helpers/refreshObligationAndReserves';
+import { createTokenAccount } from './accounts';
 
 const { approve } = models;
 
@@ -24,10 +27,14 @@ export const repayObligationLiquidity = async (
   liquidityAmount: number,
   source: TokenAccount,
   repayReserve: ParsedAccount<Reserve>,
-  obligation: ParsedAccount<Obligation>,
+  obligation: ParsedAccount<Obligation>
 ) => {
+  if (!wallet.publicKey) {
+    throw new Error('Wallet is not connected');
+  }
+
   notify({
-    message: 'Repaying liquidity...',
+    message: 'Repaying funds...',
     description: 'Please review transactions to approve.',
     type: 'warn',
   });
@@ -37,31 +44,20 @@ export const repayObligationLiquidity = async (
   const instructions: TransactionInstruction[] = [];
   const cleanupInstructions: TransactionInstruction[] = [];
 
-  const accountRentExempt = await connection.getMinimumBalanceForRentExemption(
-    AccountLayout.span,
-  );
+  const accountRentExempt = await connection.getMinimumBalanceForRentExemption(AccountLayout.span);
 
   let sourceLiquidity = source.pubkey;
-  if (
-    wallet.publicKey.equals(sourceLiquidity) &&
-    repayReserve.info.liquidity.mintPubkey.equals(NATIVE_MINT)
-  ) {
+  if (wallet.publicKey.equals(sourceLiquidity) && repayReserve.info.liquidity.mintPubkey.equals(NATIVE_MINT)) {
     sourceLiquidity = createTokenAccount(
       instructions,
       wallet.publicKey,
       accountRentExempt + liquidityAmount,
       NATIVE_MINT,
       wallet.publicKey,
-      signers,
+      signers
     );
     cleanupInstructions.push(
-      Token.createCloseAccountInstruction(
-        TOKEN_PROGRAM_ID,
-        sourceLiquidity,
-        wallet.publicKey,
-        wallet.publicKey,
-        [],
-      ),
+      Token.createCloseAccountInstruction(TOKEN_PROGRAM_ID, sourceLiquidity, wallet.publicKey, wallet.publicKey, [])
     );
   }
 
@@ -71,35 +67,66 @@ export const repayObligationLiquidity = async (
     cleanupInstructions,
     sourceLiquidity,
     wallet.publicKey,
-    liquidityAmount,
+    liquidityAmount
   );
 
   signers.push(transferAuthority);
 
   instructions.push(
-    ...await refreshObligationAndReserves(connection, obligation),
+    ...(await refreshObligationAndReserves(connection, obligation)),
     repayObligationLiquidityInstruction(
       liquidityAmount,
       sourceLiquidity,
-      repayReserve.info.liquidity.mintPubkey,
+      repayReserve.info.liquidity.supplyPubkey,
       repayReserve.pubkey,
       obligation.pubkey,
       repayReserve.info.lendingMarket,
-      transferAuthority.publicKey,
-    ),
+      transferAuthority.publicKey
+    )
   );
 
-  let { txid } = await sendTransaction(
-    connection,
-    wallet,
-    instructions.concat(cleanupInstructions),
-    signers,
-    true,
-  );
+  try {
+    const { txid } = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers, true);
 
-  notify({
-    message: 'Liquidity repaid.',
-    type: 'success',
-    description: `Transaction - ${txid}`,
-  });
+    notify({
+      message: 'Funds repaid.',
+      type: 'success',
+      description: `Transaction - ${txid}`,
+    });
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
+
+  // need for recalculation data for max withdraw/borrow/repay amount
+  try {
+    notify({
+      message: 'Updating obligation and reserves.',
+      description: 'Please review transactions to approve.',
+      type: 'warn',
+    });
+
+    const updatedObligation = (await cache.query(
+      connection,
+      obligation.pubkey,
+      ObligationParser
+    )) as ParsedAccount<Obligation>;
+
+    const { txid } = await sendTransaction(
+      connection,
+      wallet,
+      [...(await refreshObligationAndReserves(connection, updatedObligation))],
+      [],
+      true
+    );
+
+    notify({
+      message: 'Obligation and reserves updated.',
+      type: 'success',
+      description: `Transaction - ${txid}`,
+    });
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
 };

@@ -20,7 +20,6 @@ import {
   RepayReserveView,
   ReserveView,
   WithdrawView,
-  ObligationsView,
 } from './views';
 import { NewPosition } from './views/margin/newPosition';
 
@@ -44,9 +43,9 @@ export function Routes() {
                         <Route
                           exact
                           path="/dashboard"
-                          component={() => <DashboardView />}
+                          children={<DashboardView />}
                         />
-                        <Route path="/reserve/:id" component={() => <ReserveView />} />
+                        <Route path="/reserve/:id" children={<ReserveView />} />
                         <Route
                           exact
                           path="/deposit"
@@ -54,40 +53,39 @@ export function Routes() {
                         />
                         <Route
                           path="/deposit/:id"
-                          component={() => <DepositReserveView />}
+                          children={<DepositReserveView />}
                         />
-                        <Route path="/withdraw/:id" component={() => <WithdrawView />} />
-                        <Route exact path="/obligations" component={() => <ObligationsView />} />
-                        <Route exact path="/borrow" component={() => <BorrowView />} />
+                        <Route path="/withdraw/:id" children={<WithdrawView />} />
+                        <Route exact path="/borrow" children={<BorrowView />} />
                         <Route
                           path="/borrow/:id"
-                          component={() => <BorrowReserveView />}
+                          children={<BorrowReserveView />}
                         />
                         <Route
                           path="/repay/loan/:obligation"
-                          component={() => <RepayReserveView />}
+                          children={<RepayReserveView />}
                         />
                         <Route
                           path="/repay/:reserve"
-                          component={() => <RepayReserveView />}
+                          children={<RepayReserveView />}
                         />
                         <Route
                           exact
                           path="/liquidate"
-                          component={() => <LiquidateView />}
+                          children={<LiquidateView />}
                         />
                         <Route
                           path="/liquidate/:id"
-                          component={() => <LiquidateReserveView />}
+                          children={<LiquidateReserveView />}
                         />
                         <Route
                           exact
                           path="/margin"
-                          component={() => <MarginTrading />}
+                          children={<MarginTrading />}
                         />
 
-                        <Route path="/margin/:id" component={() => <NewPosition />} />
-                        <Route exact path="/faucet" component={() => <FaucetView />} />
+                        <Route path="/margin/:id" children={<NewPosition />} />
+                        <Route exact path="/faucet" children={<FaucetView />} />
                       </Switch>
                     </AppLayout>
                   </LendingProvider>

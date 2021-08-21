@@ -14,7 +14,7 @@ import {
 import {
   depositObligationCollateralInstruction,
   Reserve,
-} from '@solana/spl-token-lending';
+} from '../models';
 
 const { approve } = models;
 

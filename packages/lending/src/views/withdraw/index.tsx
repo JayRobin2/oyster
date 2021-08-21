@@ -7,12 +7,12 @@ import {
 } from '../../components/SideReserveOverview';
 
 import { WithdrawInput } from '../../components/WithdrawInput';
-import { useReserve } from '../../hooks';
+import { useLendingReserve } from '../../hooks';
 import './style.less';
 
 export const WithdrawView = () => {
   const { id } = useParams<{ id: string }>();
-  const lendingReserve = useReserve(id);
+  const lendingReserve = useLendingReserve(id);
   const reserve = lendingReserve?.info;
 
   if (!reserve || !lendingReserve) {

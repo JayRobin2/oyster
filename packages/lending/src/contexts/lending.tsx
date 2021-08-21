@@ -1,16 +1,14 @@
 import { contexts, LENDING_PROGRAM_ID, ParsedAccount } from '@oyster/common';
+import { AccountInfo, PublicKey } from '@solana/web3.js';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useLendingReserves } from '../hooks';
 import {
   isLendingMarket,
   isObligation,
   isReserve,
-  Reserve,
-} from '@solana/spl-token-lending';
-import { AccountInfo, PublicKey } from '@solana/web3.js';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useReserves } from '../hooks';
-import {
   LendingMarketParser,
   ObligationParser,
+  Reserve,
   ReserveParser,
 } from '../models';
 import { usePrecacheMarket } from './market';
@@ -38,7 +36,7 @@ export function LendingProvider({ children = null as any }) {
 export const useLending = () => {
   const connection = useConnection();
   const [lendingAccounts, setLendingAccounts] = useState<any[]>([]);
-  const { reserveAccounts } = useReserves();
+  const { reserveAccounts } = useLendingReserves();
   const precacheMarkets = usePrecacheMarket();
 
   // TODO: query for all the dex from reserves
@@ -92,7 +90,7 @@ export const useLending = () => {
         .filter(item => item !== undefined);
 
       const lendingReserves = accounts
-        .filter(acc => acc?.account && isReserve(acc.account) && (acc.info as Reserve).lendingMarket !== undefined)
+        .filter(acc => (acc?.info as Reserve).lendingMarket !== undefined)
         .map(acc => acc as ParsedAccount<Reserve>);
 
       const toQuery = [

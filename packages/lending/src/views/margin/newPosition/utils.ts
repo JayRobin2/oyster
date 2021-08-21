@@ -1,8 +1,7 @@
 import { ParsedAccount } from '@oyster/common';
-import { Reserve } from '@solana/spl-token-lending';
 import { useEnrichedPools } from '../../../contexts/market';
 import { UserDeposit, useUserDeposits } from '../../../hooks';
-import { PoolInfo } from '../../../models';
+import { PoolInfo, Reserve } from '../../../models';
 import { usePoolForBasket } from '../../../utils/pools';
 import { Position } from './interfaces';
 

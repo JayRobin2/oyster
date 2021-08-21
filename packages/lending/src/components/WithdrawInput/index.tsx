@@ -1,5 +1,4 @@
 import { ActionConfirmation, ConnectButton, contexts } from '@oyster/common';
-import { Reserve } from '@solana/spl-token-lending';
 import { PublicKey } from '@solana/web3.js';
 import { Card, Slider } from 'antd';
 import React, { useCallback, useState } from 'react';
@@ -11,6 +10,7 @@ import {
   useUserBalance,
   useUserCollateralBalance,
 } from '../../hooks';
+import { Reserve } from '../../models';
 import CollateralInput from '../CollateralInput';
 import './style.less';
 

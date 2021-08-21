@@ -1,5 +1,5 @@
 import {
-  findOrCreateAccountByMint,
+
   LENDING_PROGRAM_ID,
   notify,
   ParsedAccount,
@@ -17,8 +17,9 @@ import {
   Obligation,
   Reserve,
   withdrawObligationCollateralInstruction,
-} from '@solana/spl-token-lending';
-import { refreshObligationAndReserves } from './refreshObligationAndReserves';
+} from '../models';
+import { findOrCreateAccountByMint } from './accounts';
+import { refreshObligationAndReserves } from './helpers/refreshObligationAndReserves';
 
 export const withdrawObligationCollateral = async (
   connection: Connection,
@@ -48,6 +49,8 @@ export const withdrawObligationCollateral = async (
     [reserve.lendingMarket.toBuffer()],
     LENDING_PROGRAM_ID,
   );
+
+  signers.push(wallet.info.account);
 
   // get destination account
   const destinationCollateral = await findOrCreateAccountByMint(

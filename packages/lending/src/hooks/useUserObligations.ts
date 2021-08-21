@@ -15,18 +15,21 @@ export function useUserObligations() {
       .map(obligation => ({ obligation }))
       .sort(
         (a, b) =>
-          b.obligation.info.borrowedValue.minus(a.obligation.info.borrowedValue).toNumber(),
+          b.obligation.info.borrowedValue.toNumber() -
+          a.obligation.info.borrowedValue.toNumber(),
       );
   }, [obligations]);
 
   return {
     userObligations,
     totalDepositedValue: userObligations.reduce(
-      (result, item) => result + item.obligation.info.depositedValue.toNumber(),
+      (result, item) =>
+        result + item.obligation.info.depositedValue.toNumber() / 10 ** 6,
       0,
     ),
     totalBorrowedValue: userObligations.reduce(
-      (result, item) => result + item.obligation.info.borrowedValue.toNumber(),
+      (result, item) =>
+        result + item.obligation.info.borrowedValue.toNumber() / 10 ** 6,
       0,
     ),
   };

@@ -1,11 +1,11 @@
 import { Card } from 'antd';
 import React from 'react';
-import { useReserves } from '../../../hooks';
+import { useLendingReserves } from '../../../hooks';
 import { ReserveItem } from './item';
 import './itemStyle.less';
 
 export const DepositView = () => {
-  const { reserveAccounts } = useReserves();
+  const { reserveAccounts } = useLendingReserves();
   return (
     <div className="flexColumn">
       <Card>

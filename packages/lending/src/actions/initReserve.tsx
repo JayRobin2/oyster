@@ -1,6 +1,6 @@
 import {
-  createUninitializedAccount,
-  ensureSplAccount,
+
+
   sendTransaction,
   LENDING_PROGRAM_ID,
   models,
@@ -14,7 +14,8 @@ import {
   PublicKey,
   TransactionInstruction,
 } from '@solana/web3.js';
-import { initReserveInstruction, Reserve } from '@solana/spl-token-lending';
+import { initReserveInstruction, Reserve } from '../models';
+import { createUninitializedAccount, ensureSplAccount } from './accounts';
 
 const { approve } = models;
 

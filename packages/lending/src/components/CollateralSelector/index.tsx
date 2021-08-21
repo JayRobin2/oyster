@@ -5,10 +5,10 @@ import {
   ParsedAccount,
   TokenIcon,
 } from '@oyster/common';
-import { LendingMarket, Reserve } from '@solana/spl-token-lending';
 import { Select } from 'antd';
 import React from 'react';
-import { useReserves, UserDeposit, useUserDeposits } from '../../hooks';
+import { useLendingReserves, UserDeposit, useUserDeposits } from '../../hooks';
+import { LendingMarket, Reserve } from '../../models';
 
 const { cache } = contexts.Accounts;
 const { useConnectionConfig } = contexts.Connection;
@@ -42,7 +42,7 @@ export const CollateralSelector = (props: {
   disabled?: boolean;
   onCollateralReserve?: (id: string) => void;
 }) => {
-  const { reserveAccounts } = useReserves();
+  const { reserveAccounts } = useLendingReserves();
   const { tokenMap } = useConnectionConfig();
   const { userDeposits } = useUserDeposits();
 

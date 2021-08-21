@@ -1,6 +1,5 @@
 import {
-  ensureSplAccount,
-  findOrCreateAccountByMint,
+
   LENDING_PROGRAM_ID,
   models,
   notify,
@@ -15,8 +14,9 @@ import {
   PublicKey,
   TransactionInstruction,
 } from '@solana/web3.js';
-import { liquidateObligationInstruction, Obligation, Reserve } from '@solana/spl-token-lending';
-import { refreshObligationAndReserves } from './refreshObligationAndReserves';
+import { liquidateObligationInstruction, Obligation, Reserve } from '../models';
+import { ensureSplAccount, findOrCreateAccountByMint } from './accounts';
+import { refreshObligationAndReserves } from './helpers/refreshObligationAndReserves';
 
 const { approve } = models;
 

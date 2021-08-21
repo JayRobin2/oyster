@@ -4,7 +4,6 @@ import {
   TokenIcon,
   useTokenName,
 } from '@oyster/common';
-import { Reserve } from '@solana/spl-token-lending';
 import { PublicKey } from '@solana/web3.js';
 import { Button } from 'antd';
 import React from 'react';
@@ -12,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { LABELS } from '../../constants';
 import { usePrice } from '../../contexts/pyth';
 import { useBorrowingPower } from '../../hooks';
-import { calculateBorrowAPY } from '../../models';
+import { calculateBorrowAPY, Reserve } from '../../models';
 
 export const MarginTradeItem = (props: {
   reserve: Reserve;

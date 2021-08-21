@@ -7,7 +7,6 @@ import {
   TokenIcon,
   useTokenName,
 } from '@oyster/common';
-import { Reserve } from '@solana/spl-token-lending';
 import { Card, Typography } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -16,6 +15,7 @@ import {
   calculateBorrowAPY,
   calculateDepositAPY,
   calculateUtilizationRatio,
+  Reserve,
 } from '../../models';
 
 const { useMint } = contexts.Accounts;
